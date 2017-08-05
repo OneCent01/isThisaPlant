@@ -1,13 +1,15 @@
-DROP DATABASE IF EXISTS test;
+DROP DATABASE IF EXISTS images;
 
-CREATE DATABASE test;
+CREATE DATABASE IF NOT EXISTS images;
 
-USE test;
+USE images;
 
-CREATE TABLE items (
+CREATE TABLE plants (
   id int NOT NULL AUTO_INCREMENT,
-  quantity integer NOT NULL,
-  description varchar(50) NOT NULL,
+  title varchar(50) NOT NULL,
+  description varchar(150),
+  link varchar(80)  NOT NULL,
+  category varchar(25)  NOT NULL,
   PRIMARY KEY (ID)
 );
 

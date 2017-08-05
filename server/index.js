@@ -1,20 +1,15 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-// UNCOMMENT THE DATABASE YOU'D LIKE TO USE
-// var items = require('../database-mysql');
-// var items = require('../database-mongo');
+var images = require('../database-mysql');
+var axios = require('axios');
 
 var app = express();
 
-// UNCOMMENT FOR REACT
-// app.use(express.static(__dirname + '/../react-client/dist'));
-
-// UNCOMMENT FOR ANGULAR
-// app.use(express.static(__dirname + '/../angular-client'));
-// app.use(express.static(__dirname + '/../node_modules'));
+app.use(express.static(__dirname + '/../react-client/dist'));
+app.use(bodyParser.json());
 
 app.get('/items', function (req, res) {
-  items.selectAll(function(err, data) {
+  images.selectAll(function(err, data) {
     if(err) {
       res.sendStatus(500);
     } else {
@@ -22,6 +17,24 @@ app.get('/items', function (req, res) {
     }
   });
 });
+
+app.post('/images', function(req, res) {
+  var insertObj = {
+    title: req.body.name,
+    description: req.body.image.description,
+    link: req.body.image.link,
+    category: 'plant'
+  }
+  images.insert(insertObj, function(err, data) {
+    if(err) {
+      console.log('uh, guess it failed: ', err);
+      res.sendStatus(500);
+    } else {
+      console.log('res from query: ', data);
+      res.send(data)
+    }
+  })
+})
 
 app.listen(3000, function() {
   console.log('listening on port 3000!');
